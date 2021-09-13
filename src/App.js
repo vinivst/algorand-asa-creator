@@ -12,10 +12,10 @@ import {
 } from 'reactstrap';
 
 const algosdk = require('algosdk');
-const baseServer = 'https://testnet-algorand.api.purestake.io/ps2';
+const baseServer = process.env.REACT_APP_BASESERVER;
 const port = '';
 const token = {
-  'X-API-Key': 'mdVW6vv8jO6BXFGh01Yw2aUNhWj8dria2YmkxeJD',
+  'X-API-Key': process.env.REACT_APP_TOKEN,
 };
 
 const algodClient = new algosdk.Algodv2(token, baseServer, port);
@@ -101,8 +101,8 @@ class App extends Component {
         from: accounts[0]['address'],
         assetName: assetName,
         unitName: unitName,
-        total: total,
-        decimals: decimals,
+        total: +total,
+        decimals: +decimals,
         note: AlgoSigner.encoding.stringToByteArray(note),
         suggestedParams: { ...suggestedParams },
       });
