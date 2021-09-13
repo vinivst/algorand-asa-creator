@@ -107,7 +107,7 @@ class App extends Component {
         from: accounts[0]['address'],
         assetName: assetName,
         unitName: unitName,
-        total: +total,
+        total: +(total * 10 ** decimals),
         decimals: +decimals,
         note: AlgoSigner.encoding.stringToByteArray(note),
         suggestedParams: {
