@@ -10,26 +10,27 @@ import {
   Input,
   Button,
 } from 'reactstrap';
-
 const algosdk = require('algosdk');
+
+/*
 const baseServer = process.env.REACT_APP_BASESERVER;
 const port = '';
 const token = {
   'X-API-Key': process.env.REACT_APP_TOKEN,
 };
 
-const algodClient = new algosdk.Algodv2(token, baseServer, port);
+const algodClient = new algosdk.Algodv2(token, baseServer, port);*/
 
 //const appId = 13793863;
 
 class App extends Component {
   state = {
     accounts: [],
-    assetName: '',
-    unitName: '',
-    total: 0,
-    decimals: 0,
-    note: '',
+    assetName: 'VINI2',
+    unitName: 'VINI2',
+    total: 100000000,
+    decimals: 6,
+    note: 'Hello World',
     loaded: false,
   };
 
@@ -95,7 +96,12 @@ class App extends Component {
       console.log(error);
     }*/
     try {
-      let suggestedParams = await algodClient.getTransactionParams().do();
+      //let suggestedParams = await algodClient.getTransactionParams().do();
+
+      const txParams = await AlgoSigner.algod({
+        ledger: 'TestNet',
+        path: '/v2/transactions/params',
+      });
 
       const txn = algosdk.makeAssetCreateTxnWithSuggestedParamsFromObject({
         from: accounts[0]['address'],
@@ -104,7 +110,14 @@ class App extends Component {
         total: +total,
         decimals: +decimals,
         note: AlgoSigner.encoding.stringToByteArray(note),
-        suggestedParams: { ...suggestedParams },
+        suggestedParams: {
+          fee: txParams['fee'],
+          firstRound: txParams['last-round'],
+          flatFee: false,
+          genesisHash: txParams['genesis-hash'],
+          genesisID: txParams['genesis-id'],
+          lastRound: txParams['last-round'] + 1000,
+        },
       });
 
       // Use the AlgoSigner encoding library to make the transactions base64
