@@ -26,11 +26,11 @@ const algodClient = new algosdk.Algodv2(token, baseServer, port);*/
 class App extends Component {
   state = {
     accounts: [],
-    assetName: 'VINI2',
-    unitName: 'VINI2',
-    total: 100000000,
-    decimals: 6,
-    note: 'Hello World',
+    assetName: '',
+    unitName: '',
+    total: 0,
+    decimals: 0,
+    note: '',
     loaded: false,
   };
 
